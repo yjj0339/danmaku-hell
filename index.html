@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f7f7">
+  <meta name="description" content="弹幕地狱：浅色霓虹 Boss Rush 街机游戏。三场决战，九重弹幕。">
+  <title>弹幕地狱 · BULLET HELL</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%2310b6ba' d='M32 5 56 55 32 43 8 55Z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <a class="brand" href="./" aria-label="弹幕地狱首页"><span class="brand-mark">✦</span><span>弹幕地狱<small>BULLET HELL / ARCADE 001</small></span></a>
+      <div class="header-actions"><span class="local-tag"><i></i> LOCAL ARCADE</span><button id="layout-button" class="icon-button" title="专注竖屏布局" aria-label="专注竖屏布局" aria-pressed="false">▯</button><button id="sound-button" class="icon-button" title="切换音效 · M" aria-label="关闭音效" aria-pressed="true">♪</button><button id="fx-button" class="icon-button" title="减少闪光与震动" aria-label="减少闪光与震动" aria-pressed="false">✧</button><button id="fullscreen-button" class="icon-button" title="全屏" aria-label="全屏">⛶</button></div>
+    </header>
+    <main class="layout">
+      <aside class="left-column">
+        <div class="edition"><span class="tiny-square"></span> GEOMETRIC BOSS RUSH</div>
+        <h1 class="tagline">保持冷静。<br>穿过<span>光雨。</span></h1>
+        <p class="intro-copy">让每一次闪避，<br>成为你的高光时刻。</p>
+        <section class="score-card glass"><div class="label">本局得分 <span>SCORE</span></div><div id="score" class="score-number">000000</div><div class="score-bottom"><span>最高纪录</span><strong id="best-score">000000</strong></div><div class="storage-note" id="storage-status">本浏览器自动保存</div></section>
+        <section class="resources glass"><div class="resource-row"><div><span class="label">剩余生命</span><small>LIVES</small></div><div id="lives" class="resource-icons cyan">▲ ▲ ▲</div></div><div class="resource-row"><div><span class="label">清屏炸弹</span><small>BOMBS</small></div><div id="bombs" class="resource-icons orange">✺ ✺ ✺</div></div><div class="resource-foot">击败 Boss <b>+1</b> 炸弹</div></section>
+        <div class="graze-card"><span class="graze-symbol">⊹</span><div><span class="label">擦弹次数</span><strong id="graze-count">000</strong><small>每次擦弹 +50 分</small></div></div>
+      </aside>
+      <section class="game-column" aria-label="游戏区域">
+        <div class="arena-top"><span><i></i><span id="arena-status">READY TO PLAY</span></span><span id="run-counter">BOSS 01 / 03</span></div>
+        <div id="mobile-hud" class="mobile-hud"><div><small>本局得分</small><strong id="mobile-score">000000</strong></div><div><small>最高纪录</small><strong id="mobile-best">000000</strong></div><div><small>生命</small><strong id="mobile-lives">▲▲▲</strong></div><div><small>炸弹</small><strong id="mobile-bombs">✺ 3</strong></div></div>
+        <div class="arena" id="arena">
+          <canvas id="game" width="640" height="800" tabindex="-1" aria-label="弹幕地狱游戏画面"></canvas>
+          <div class="scanlines" aria-hidden="true"></div>
+          <div id="boss-hud" class="boss-hud hidden"><div class="boss-hud-row"><span id="boss-name">01 / 棱镜</span><span id="phase-name">PHASE 01</span></div><div class="health-track"><div id="health-fill"></div><i></i><i></i></div><div class="pattern-name" id="pattern-name">螺旋序曲</div></div>
+          <div id="overlay" class="overlay">
+            <div id="start-screen" class="screen start-screen"><div class="menu-kicker">A DANCE THROUGH CHAOS</div><div class="menu-title">弹幕<span>地狱<span class="title-star">✳</span></span></div><p class="menu-subtitle">三场决战。九重弹幕。一次极限。</p><button id="start-button" class="primary-button">开始挑战 <span>↗</span></button><div class="start-hint"><span class="keyboard-hint"><kbd>ENTER</kbd> 或点击开始</span><span class="touch-hint">轻触开始 · 拖动飞行 · 双击炸弹</span></div><div class="menu-rule"><span></span> 只需闪避，火力交给飞船 <span></span></div></div>
+            <div id="pause-screen" class="screen hidden"><div class="menu-kicker">TAKE A BREATH</div><h2>时间暂停。</h2><p>准备好了，就继续穿过光雨。</p><button id="resume-button" class="primary-button">继续挑战 <span>↗</span></button><button id="restart-paused" class="text-button">重新开始</button></div>
+            <div id="end-screen" class="screen hidden"><div id="end-kicker" class="menu-kicker">SIGNAL LOST</div><h2 id="end-title">再试一次。</h2><p id="end-copy">每一次失败，都让下一次闪避更从容。</p><div id="record-tag" class="record-tag hidden">✦ NEW PERSONAL BEST</div><div class="end-score" id="end-score">000000</div><div class="end-stats"><span>击败 Boss <b id="end-bosses">0 / 3</b></span><span>擦弹 <b id="end-grazes">0</b></span><span>用时 <b id="end-time">00:00</b></span></div><button id="retry-button" class="primary-button">再次挑战 <span>↗</span></button><button id="home-button" class="text-button">返回标题</button></div>
+          </div>
+          <div class="battle-banner hidden" id="battle-banner"><small id="banner-kicker">BOSS 01</small><strong id="banner-title">棱镜</strong><span id="banner-copy">螺旋序曲</span></div>
+        </div>
+        <div class="touch-controls"><button id="touch-bomb" class="touch-bomb hidden" aria-label="释放炸弹"><span>✺</span><small>炸弹</small></button><div id="touch-pad" class="touch-pad" aria-label="飞船触控区"><span class="pad-dots">···</span><strong id="touch-instruction">在此拖动飞行</strong><small>手指不遮挡飞船 · 双击炸弹</small></div><button id="pause-button" class="arena-pause hidden" aria-label="暂停游戏" title="暂停 · P / Esc"><span>Ⅱ</span><small>暂停</small></button></div>
+        <div class="arena-bottom"><span><span class="cyan">●</span> 4px 核心判定 · 擦弹 +50</span><span>AUTO FIRE <i></i></span></div>
+      </section>
+      <aside class="right-column">
+        <div class="section-label">你的对手 <span>THE BOSSES</span></div>
+        <div class="boss-list"><div class="boss-card active" data-boss="0"><div class="shape-icon triangle">△</div><div><small>01 / VECTOR</small><h3>棱镜</h3><p>螺旋 · 环形 · 三叶花</p></div><span class="boss-card-status">01</span></div><div class="boss-card" data-boss="1"><div class="shape-icon hexagon">⬡</div><div><small>02 / HEXA</small><h3>蜂巢</h3><p>六向 · 交错 · 花轮</p></div><span class="boss-card-status">02</span></div><div class="boss-card" data-boss="2"><div class="shape-icon circle">◉</div><div><small>03 / ORBIT</small><h3>星核</h3><p>双旋 · 星环 · 万花镜</p></div><span class="boss-card-status">03</span></div></div>
+        <section class="controls glass"><div class="section-label">飞行指南 <span>HOW TO PLAY</span></div><div class="control-item"><div class="key-group"><kbd>W</kbd><span><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span></div><div><b>自由移动</b><small>WASD / 方向键</small></div></div><div class="control-item"><kbd class="wide-key">SHIFT</kbd><div><b>精密闪避</b><small>按住减速，显示擦弹圈</small></div></div><div class="control-item"><kbd class="wide-key">SPACE</kbd><div><b>释放炸弹</b><small>空格 / X · 清除弹幕</small></div></div><div class="control-item"><kbd class="wide-key">ESC</kbd><div><b>稍作休息</b><small>Esc / P · 暂停</small></div></div><div class="touch-guide"><span>⌁</span> 手机拖动 · 双击炸弹<br><small>飞船位于手指上方，视线始终清晰</small></div></section>
+        <div class="tip"><span>✳</span><p>接近危险，但别触碰核心。<br><b>擦弹，是勇敢者的奖励。</b></p></div>
+      </aside>
+    </main>
+    <footer><span>BUILT FOR THE FLOW.</span><span>戴上耳机，进入心流 <span class="footer-star">✦</span></span><span>01 — 03 / NO SMALL FRY</span></footer>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
