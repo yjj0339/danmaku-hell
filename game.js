@@ -610,7 +610,10 @@
   $('fullscreen-button').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen({navigationUI:'hide'});}catch{focusLayout=true;fitDisplay();$('fullscreen-button').title='已切换为专注竖屏布局';}});
   $('start-button').addEventListener('click',start);$('retry-button').addEventListener('click',start);$('restart-paused').addEventListener('click',start);
   $('resume-button').addEventListener('click',resume);$('pause-button').addEventListener('click',pause);$('home-button').addEventListener('click',home);
-  $('touch-bomb').addEventListener('click',()=>useBomb());
+  // Fire on press so mobile browsers cannot swallow a click immediately after a drag.
+  $('touch-bomb').addEventListener('pointerdown',e=>{if(e.button!==0)return;e.preventDefault();useBomb();});
+  // Keyboard and assistive activations use a click without a pointer gesture.
+  $('touch-bomb').addEventListener('click',e=>{if(e.detail===0)useBomb();});
   addEventListener('resize',scheduleDisplay);addEventListener('orientationchange',scheduleDisplay);
   primaryPointer.addEventListener('change',scheduleDisplay);
   document.addEventListener('fullscreenchange',scheduleDisplay);
